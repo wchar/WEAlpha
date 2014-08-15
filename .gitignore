@@ -26,7 +26,8 @@ $RECYCLE.BIN/
 .LSOverride
 
 # Icon must ends with two \r.
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -45,3 +46,12 @@ Icon
 *.ipch
 *.sdf
 *.suo
+*.idb
+*.opensdf
+*.lastbuildstate
+*.log
+*.unsuccessfulbuild
+*.cache
+*.tlog
+*.obj
+*.log

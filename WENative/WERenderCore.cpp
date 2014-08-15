@@ -1,5 +1,3 @@
-#include "WED3DWindow.h"
-
 #include "WERenderCore.h"
 #include "WECascadeShadowManager.h"
 #include "WEDeferredLighting.h"

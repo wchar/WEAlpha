@@ -10,30 +10,9 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="App.h" />
-    <ClInclude Include="Frame.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="App.cpp" />
-    <ClCompile Include="Frame.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="shaders\DeferredLighting.hlsl" />
-    <None Include="shaders\FullScreenQuadVS.hlsl" />
-    <None Include="shaders\HDAO.hlsl" />
-    <None Include="shaders\HDR.hlsl" />
-    <None Include="shaders\MeshCascade.hlsl" />
-    <None Include="shaders\MeshPS.hlsl" />
-    <None Include="shaders\MeshVS.hlsl" />
-    <None Include="shaders\SkeletonMeshVS.hlsl" />
-    <None Include="shaders\TestSRV.hlsl" />
-    <None Include="shaders\Variance.hlsl" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{FEA6549A-D0B2-49D7-885A-9F886E523DE0}</ProjectGuid>
-    <RootNamespace>ContentBrowser</RootNamespace>
-    <ProjectName>WEContentBrowser</ProjectName>
+    <ProjectGuid>{8578A738-CC4A-4124-B618-773957C27548}</ProjectGuid>
+    <RootNamespace>WEContentBrowser</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -62,11 +41,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>E:\WindmillEngine\WE\WENative;..\..\ThirdParty\DirectX\Include;..\..\ThirdParty\wxWidgets\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\WENative;..\..\ThirdParty\DirectX\Include;..\..\ThirdParty\wxWidgets\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>E:\WindmillEngine\WE\Debug;..\..\ThirdParty\wxWidgets\vc_lib;..\..\ThirdParty\DirectX\Lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\Debug;..\..\ThirdParty\wxWidgets\vc_lib;..\..\ThirdParty\DirectX\Lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>WENative.lib;wxmsw30ud_xrc.lib;wxmsw30ud_propgrid.lib;wxmsw30ud_html.lib;wxmsw30ud_adv.lib;wxmsw30ud_core.lib;wxbase30ud_xml.lib;wxbase30ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxexpatd.lib;winmm.lib;shell32.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;wsock32.lib;odbc32.lib;msvcrtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -83,6 +62,14 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="Frame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="App.h" />
+    <ClInclude Include="Frame.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
