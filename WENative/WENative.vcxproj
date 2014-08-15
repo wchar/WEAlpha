@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{43AA5DB0-01C1-46B3-A178-AEB75C3CAB4B}</ProjectGuid>
+    <RootNamespace>WENative</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\ThirdParty\FBX\include;..\..\ThirdParty\DirectX\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <UndefinePreprocessorDefinitions>DEBUG</UndefinePreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\ThirdParty\DirectX\Lib\x86;..\..\ThirdParty\FBX\lib\vs2010\x86\debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libfbxsdk-md.lib;d3d11.lib;d3dcompiler.lib;d3dx11.lib;d3dx9.lib;dxerr.lib;dxguid.lib;dinput8.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="WEBaseCamera.h" />
+    <ClInclude Include="WECascadeShadowManager.h" />
+    <ClInclude Include="WECascadeShadowMisc.h" />
+    <ClInclude Include="WEContent.h" />
+    <ClInclude Include="WED3D.h" />
+    <ClInclude Include="WEDeferredLighting.h" />
+    <ClInclude Include="WEFbxCommon.h" />
+    <ClInclude Include="WEFbxImporter.h" />
+    <ClInclude Include="WEFbxLoader.h" />
+    <ClInclude Include="WEFinalPass.h" />
+    <ClInclude Include="WEFullScreenQuad.h" />
+    <ClInclude Include="WEHDAO.h" />
+    <ClInclude Include="WEHDR.h" />
+    <ClInclude Include="WEMaterial.h" />
+    <ClInclude Include="WEMaterialContent.h" />
+    <ClInclude Include="WEMesh.h" />
+    <ClInclude Include="WEMeshContent.h" />
+    <ClInclude Include="WEMeshMisc.h" />
+    <ClInclude Include="WEMeshRenderer.h" />
+    <ClInclude Include="WEObjImporter.h" />
+    <ClInclude Include="WENative.h" />
+    <ClInclude Include="WERenderCore.h" />
+    <ClInclude Include="WERenderTarget.h" />
+    <ClInclude Include="WESkeletonMesh.h" />
+    <ClInclude Include="WESkeletonMeshContent.h" />
+    <ClInclude Include="WESkeletonMeshRenderer.h" />
+    <ClInclude Include="WETexture.h" />
+    <ClInclude Include="WETextureContent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="WEBaseCamera.cpp" />
+    <ClCompile Include="WECascadeShadowManager.cpp" />
+    <ClCompile Include="WEContent.cpp" />
+    <ClCompile Include="WED3D.cpp" />
+    <ClCompile Include="WEDeferredLighting.cpp" />
+    <ClCompile Include="WEFbxCommon.cpp" />
+    <ClCompile Include="WEFbxImporter.cpp" />
+    <ClCompile Include="WEFbxLoader.cpp" />
+    <ClCompile Include="WEFinalPass.cpp" />
+    <ClCompile Include="WEFullScreenQuad.cpp" />
+    <ClCompile Include="WEHDAO.cpp" />
+    <ClCompile Include="WEHDR.cpp" />
+    <ClCompile Include="WEMaterial.cpp" />
+    <ClCompile Include="WEMaterialContent.cpp" />
+    <ClCompile Include="WEMesh.cpp" />
+    <ClCompile Include="WEMeshContent.cpp" />
+    <ClCompile Include="WEMeshRenderer.cpp" />
+    <ClCompile Include="WEObjImporter.cpp" />
+    <ClCompile Include="WERenderCore.cpp" />
+    <ClCompile Include="WERenderTarget.cpp" />
+    <ClCompile Include="WESkeletonMesh.cpp" />
+    <ClCompile Include="WESkeletonMeshContent.cpp" />
+    <ClCompile Include="WESkeletonMeshRenderer.cpp" />
+    <ClCompile Include="WETexture.cpp" />
+    <ClCompile Include="WETextureContent.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

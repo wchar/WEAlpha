@@ -1,0 +1,23 @@
+﻿生成启动时间为 2014/8/14 20:28:52。
+     1>项目“E:\WindmillEngine\WE\ContentBrowser\ContentBrowser.vcxproj”在节点 2 上(build 个目标)。
+     1>InitializeBuildStatus:
+         正在对“Debug\ContentBrowser.unsuccessfulbuild”执行 Touch 任务。
+       ClCompile:
+         F:\IDE\VS2010\VC\bin\CL.exe /c /IE:\WindmillEngine\WE\WENative /I..\..\ThirdParty\DirectX\Include /I..\..\ThirdParty\wxWidgets\include /ZI /nologo /W3 /WX- /Od /Oy- /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Frame.cpp
+         Frame.cpp
+       Link:
+         F:\IDE\VS2010\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\WindmillEngine\WE\Debug\ContentBrowser.exe" /NOLOGO /LIBPATH:E:\WindmillEngine\WE\Debug /LIBPATH:..\..\ThirdParty\wxWidgets\vc_lib /LIBPATH:..\..\ThirdParty\DirectX\Lib\x86 WENative.lib wxmsw30ud_xrc.lib wxmsw30ud_propgrid.lib wxmsw30ud_html.lib wxmsw30ud_adv.lib wxmsw30ud_core.lib wxbase30ud_xml.lib wxbase30ud.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxexpatd.lib winmm.lib shell32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib rpcrt4.lib advapi32.lib wsock32.lib odbc32.lib msvcrtd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\ContentBrowser.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\WindmillEngine\WE\Debug\ContentBrowser.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\WindmillEngine\WE\Debug\ContentBrowser.lib" /MACHINE:X86 Debug\App.obj
+         Debug\Frame.obj
+         LINK : 没有找到 E:\WindmillEngine\WE\Debug\ContentBrowser.exe 或上一个增量链接没有生成它；正在执行完全链接
+            正在创建库 E:\WindmillEngine\WE\Debug\ContentBrowser.lib 和对象 E:\WindmillEngine\WE\Debug\ContentBrowser.exp
+         ContentBrowser.vcxproj -> E:\WindmillEngine\WE\Debug\ContentBrowser.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"E:\WindmillEngine\WE\Debug\ContentBrowser.exe;#1" /manifest Debug\ContentBrowser.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         正在删除文件“Debug\ContentBrowser.unsuccessfulbuild”。
+         正在对“Debug\ContentBrowser.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“E:\WindmillEngine\WE\ContentBrowser\ContentBrowser.vcxproj”(build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:14.52
