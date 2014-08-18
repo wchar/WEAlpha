@@ -1,12 +1,13 @@
 #pragma once
 
-
 #include <wx/wx.h>
+#include "WENative.h"
+#include "MaterialEditor.h"
 
 class CEFrame : public wxFrame
 {
 public:
-	CEFrame( wxFrame *frame, const wxString& title );
+	CEFrame(wxFrame *frame, const wxString& title);
 	~CEFrame();
 private:
 	enum
@@ -22,18 +23,10 @@ private:
         idTimer = 0
 	};
 
-	void OnClose( wxCloseEvent& event );
-	void OnQuit( wxCommandEvent& event );
+	void OnClose(wxCloseEvent& event);
+	void OnQuit(wxCommandEvent& event);
 
-    void OnPaint( wxPaintEvent& event );
-    void OnSize( wxSizeEvent& event );
-    void OnMouseEvent( wxMouseEvent& evt );
-    void OnTimer( wxTimerEvent& event );
-
-    wxTimer m_Timer;
-
-	wxButton* m_pBGColorBtn;
-	wxButton* m_pResetBtn;
+    WERenderCore* m_pRenderCore;
 
 	DECLARE_EVENT_TABLE();
 };

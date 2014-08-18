@@ -1,13 +1,12 @@
 #include "App.h"
-#include "Frame.h"
+#include "MainFrame.h"
 
 IMPLEMENT_APP(CEApp);
 
 bool CEApp::OnInit()
 {
-
-	CEFrame* frame = new CEFrame(0L, _("SPFViewer"));
-	frame->SetIcon(wxICON(aaaa)); // To Set App Icon
+    wxInitAllImageHandlers();
+	MainFrame* frame = new MainFrame(0L);
 	frame->Show();
 	return true;
 }

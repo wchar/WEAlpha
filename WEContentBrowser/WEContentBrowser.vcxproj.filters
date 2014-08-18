@@ -21,12 +21,51 @@
     <ClCompile Include="Frame.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="MaterialEditor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DPanel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrame.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonMeshEditor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialModifierPanel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticMeshEditor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Frame.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DPanel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrame.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="resource2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonMeshEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialModifierPanel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticMeshEditor.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

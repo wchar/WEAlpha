@@ -1,71 +1,6 @@
 #include "Frame.h"
 #include "WENative.h"
 
-#include "WEObjImporter.h"
-
-WERenderCore* m_pRenderCore = NULL;
-WEObjImporter* m_pObjImporter = NULL;
-WEFbxImporter* m_pFbxImporter = NULL;
-WEMeshContent* m_pMeshContent = NULL;
-WESkeletonMeshContent* m_pSkeletonContent = NULL;
-WEMesh* m_pMesh = NULL;
-WESkeletonMesh* m_pSkeleton = NULL;
-
-
-void OnCreate(HWND hwnd)
-{    
-    // Create RenderCore
-    m_pRenderCore = new WERenderCore();
-    m_pRenderCore->Create(hwnd);
-
-    // Create Camera
-    WE::Camera();
-    WEModelViewerCamera* pCamera = new WEModelViewerCamera();
-    pCamera->SetProjParams(600, 400, 0, 100.0f);
-    pCamera->OnBegin( 0, 0 );
-    pCamera->OnMove( 1, 1 );
-    pCamera->OnEnd();
-    WE::SetCamera(pCamera);
-
-    // Create Camera
-    WEModelViewerCamera* pLightCamera = WE::Light();
-    //pCamera->SetCamera(XMFLOAT3(10000,0,0),XMFLOAT3(0,0,0));
-    pLightCamera->SetProjParams(400, 400, 0, 100.0f);
-    pLightCamera->OnBegin( 0, 0 );
-    pLightCamera->OnMove( 1, 1 );
-    pLightCamera->OnEnd();
-
-    // Impoter
-    m_pObjImporter = new WEObjImporter(L"mesh\\oa.obj");
-    m_pFbxImporter = new WEFbxImporter(L"mesh\\cub.fbx");
-    // Create Content
-    m_pMeshContent = new WEMeshContent();
-    m_pSkeletonContent = new WESkeletonMeshContent();
-
-    //m_pMeshContent->Import(m_pObjImporter);
-    m_pMeshContent->Import(m_pFbxImporter);
-    m_pSkeletonContent->Import(m_pFbxImporter);
-
-    // Create Mesh
-    m_pMesh = m_pMeshContent->CreateMesh();
-    m_pSkeleton = m_pSkeletonContent->CreateMesh();
-
-}
-
-
-void OnFrame()
-{
-   if (m_pRenderCore->BeginFrame())
-   {
-       //m_pRenderCore->PushMesh(m_pMesh);
-       static double time = 0;
-       time += 0.01;
-       m_pSkeleton->TransformMesh(time);
-       m_pRenderCore->PushMesh(m_pSkeleton);
-       
-       m_pRenderCore->EndFrame();
-   }
-}
 
 void DrawCoordinate()
 {		
@@ -187,94 +122,35 @@ void DrawCoordinate()
 }
 
 
-
-BEGIN_EVENT_TABLE( CEFrame, wxFrame )
-	EVT_CLOSE( CEFrame::OnClose )
-	EVT_MENU( idMenuQuit, CEFrame::OnQuit )
-
-    EVT_PAINT( CEFrame::OnPaint )
-    EVT_MOUSE_EVENTS( CEFrame::OnMouseEvent )
-    EVT_SIZE( CEFrame::OnSize )
-    EVT_TIMER( idTimer, CEFrame::OnTimer )
+BEGIN_EVENT_TABLE(CEFrame, wxFrame)    
+	EVT_CLOSE(CEFrame::OnClose)
+	EVT_MENU(idMenuQuit, CEFrame::OnQuit)
 END_EVENT_TABLE()
 
-CEFrame::CEFrame( wxFrame *frame, const wxString& title )
-	: wxFrame( frame, -1, title, wxDefaultPosition, wxSize( 1100,700 ) ),
-    m_Timer( this, idTimer )
+CEFrame::CEFrame(wxFrame *frame, const wxString& title )
+	: wxFrame(frame, -1, title, wxDefaultPosition, wxSize(1100,700))
 {
+	SetMinSize(wxSize(600, 400));
 
-	SetMinSize( wxSize( 600, 400 ) );
+    m_pRenderCore = new WERenderCore();
+    m_pRenderCore->Create(GetHandle());
 
-    OnCreate(GetHandle());
-
-    m_pRenderCore->SetWindow(GetHandle());
-
-    m_Timer.Start( 6 );
+    MaterialEditor* pM = new MaterialEditor(this);
+    pM->Create(m_pRenderCore);
+    pM->Show(true);
 }
 
 CEFrame::~CEFrame()
 {
-
+    SAFE_DELETE(m_pRenderCore);
 }
 
-void CEFrame::OnClose( wxCloseEvent &event )
+void CEFrame::OnClose(wxCloseEvent &event)
 {
 	Destroy();
 }
 
-void CEFrame::OnQuit( wxCommandEvent &event )
+void CEFrame::OnQuit(wxCommandEvent &event)
 {
 	Destroy();
-}
-
-
-void CEFrame::OnSize( wxSizeEvent& evt )
-{
-    m_pRenderCore->OnResizeWindow();    
-    OnFrame();
-}
-
-void CEFrame::OnMouseEvent( wxMouseEvent& evt )
-{
-    wxPoint pt( evt.GetPosition() );
-    WEModelViewerCamera* pCamera = (WEModelViewerCamera*)WE::Camera();
-    if (GetAsyncKeyState( 'Q' ))
-        pCamera = WE::Light();
-    if ( evt.LeftDown() )
-    {
-        pCamera->OnBegin( pt.x, pt.y );
-        SetFocus();
-    }
-    else if ( evt.Dragging()&&evt.LeftIsDown() )
-    {
-        pCamera->OnMove( pt.x, pt.y );
-        //CEGetCascadeSystem()->OnFrame();
-    }
-    else if ( evt.LeftUp() )
-    {
-        pCamera->OnEnd();
-    }
-
-    if ( evt.GetWheelRotation() != 0 )
-    {
-        if ( evt.GetWheelRotation() > 0 )
-            pCamera->Closer();
-        else
-            pCamera->Further();
-        //CEGetCascadeSystem()->OnFrame();
-    }
-    /**/
-}
-
-void CEFrame::OnTimer( wxTimerEvent& event )
-{
-    OnFrame();
-}
-
-void CEFrame::OnPaint( wxPaintEvent& evt )
-{
-    // render
-    OnFrame();
-
-    evt.Skip();
 }

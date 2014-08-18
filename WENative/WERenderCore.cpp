@@ -80,6 +80,7 @@ HRESULT WERenderCore::Create(HWND hwnd)
 
     // Create D3D.
     WE::D3D().Create(hwnd);
+    m_CurrenthWnd = hwnd;
 
     // Get d3dDevice
     ID3D11Device* pd3dDevice = WE::D3DDevice();
@@ -111,6 +112,13 @@ HRESULT WERenderCore::Create(HWND hwnd)
 HRESULT WERenderCore::SetWindow(HWND hwnd)
 {
     HRESULT hr;
+
+    if(m_CurrenthWnd == hwnd)
+    {
+        return S_OK;
+    }
+
+    m_CurrenthWnd = hwnd;
 
     if (m_uFrameStage == eFrameEnd)
     {

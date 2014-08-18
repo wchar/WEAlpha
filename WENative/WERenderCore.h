@@ -69,5 +69,7 @@ protected:
         eFrameEnd,
     };
     UINT m_uFrameStage;	
+
+    HWND m_CurrenthWnd;
 };
 
