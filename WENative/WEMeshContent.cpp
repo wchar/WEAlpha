@@ -60,7 +60,7 @@ bool WEMeshContent::Import(WEObjImporter* pImporter)
     vector <WEObjImporter::VERTEX>* pVertices = pImporter->GetVertices();
     vector <DWORD>* pIndices = pImporter->GetIndices();
     vector <DWORD>* pAttributes = pImporter->GetAttributes();
-    vector <WEObjImporter::Material*>* pMaterials = pImporter->GetMaterial();
+    vector <MATERIAL*>* pMaterials = pImporter->GetMaterial();
 
     UINT sizeofVB = GetVBStride() * pVertices->size();
     UINT sizeofIB = sizeof(DWORD) * pIndices->size();
@@ -69,7 +69,7 @@ bool WEMeshContent::Import(WEObjImporter* pImporter)
     ReleaseMaterialContents();
 
     // compute material
-    for (std::vector<WEObjImporter::Material*>::iterator it = pMaterials->begin(); it != pMaterials->end(); ++it)
+    for (std::vector<MATERIAL*>::iterator it = pMaterials->begin(); it != pMaterials->end(); ++it)
     {
         WEMaterialContent* pNewMaterial = new  WEMaterialContent();
         pNewMaterial->Create(*it);

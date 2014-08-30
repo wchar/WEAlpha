@@ -151,6 +151,7 @@ fbStaticMeshEditor::fbStaticMeshEditor( wxWindow* parent, wxWindowID id, const w
     this->Connect( m_menuItem7->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbStaticMeshEditor::OnExit ) );
     this->Connect( m_menuItem11->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbStaticMeshEditor::OnToolBar ) );
     this->Connect( m_menuItem13->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbStaticMeshEditor::OnAbout ) );
+    this->Connect( wxEVT_ACTIVATE, wxActivateEventHandler( fbStaticMeshEditor::OnActivate ) );
 }
 
 fbStaticMeshEditor::~fbStaticMeshEditor()
@@ -166,16 +167,87 @@ fbStaticMeshEditor::~fbStaticMeshEditor()
     this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbStaticMeshEditor::OnExit ) );
     this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbStaticMeshEditor::OnToolBar ) );
     this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbStaticMeshEditor::OnAbout ) );
-
+	this->Disconnect( wxEVT_ACTIVATE, wxActivateEventHandler( fbStaticMeshEditor::OnActivate ) );
 }
 
-
-#include "MaterialModifierPanel.h"
 ///////////////////////////////////////////////////////////////////////////
-StaticMeshEditor::StaticMeshEditor(wxWindow* parent)
+StaticMeshEditor::StaticMeshEditor(wxWindow* parent, WERenderCore* pRenderCore)
     : fbStaticMeshEditor(parent)
 {
-    MaterialModifierPanel* pMaterialPanel = new MaterialModifierPanel(m_panelMaterial);
-    m_panelMaterial->GetSizer()->Add(pMaterialPanel, 1, wxEXPAND);
+    // init material modifier
+    m_pMaterialModifierPanel = new MaterialModifierPanel(m_panelMaterial);
+    m_panelMaterial->GetSizer()->Add(m_pMaterialModifierPanel, 1, wxEXPAND);
     m_panelMaterial->GetSizer()->Fit( m_panelMaterial );
+
+    // init model viewer
+    m_pRenderCore = pRenderCore;
+    m_pModelViewerWindow = new ModelViewerWindow(m_panelModelViewer, pRenderCore);
+    wxBoxSizer* bSizer = new wxBoxSizer( wxVERTICAL );
+    bSizer->Add(m_pModelViewerWindow, 1, wxEXPAND);
+    m_panelModelViewer->SetSizer(bSizer);    
+    m_panelModelViewer->Layout();
+    bSizer->Fit( m_panelModelViewer ); 
+    m_splitter_v->SetSashPosition(m_splitter_v->GetSashPosition()-1);    
+    m_splitter_v->SetSashPosition(m_splitter_v->GetSashPosition()+1);
+    
+    // Timer
+    m_Timer.SetOwner( this, wxID_ANY );
+    this->Connect( wxID_ANY, wxEVT_TIMER, wxTimerEventHandler( StaticMeshEditor::OnTick ) );
+    m_Timer.Start(10);
+
+    m_pMesh = NULL;
+    m_pMeshContent = NULL;
+}
+
+StaticMeshEditor::~StaticMeshEditor()
+{
+    m_Timer.Stop();
+    Sleep(100);
+}
+
+void StaticMeshEditor::OnOpen( wxCommandEvent& event ) 
+{ 
+    event.Skip();
+}
+void StaticMeshEditor::OnSave( wxCommandEvent& event )
+{ 
+    event.Skip();
+}
+void StaticMeshEditor::OnImport( wxCommandEvent& event )
+{
+    event.Skip();
+}
+void StaticMeshEditor::OnAbout( wxCommandEvent& event )
+{ 
+    event.Skip(); 
+}
+void StaticMeshEditor::OnExit( wxCommandEvent& event )
+{ 
+    event.Skip(); 
+}
+void StaticMeshEditor::OnToolBar( wxCommandEvent& event ) 
+{ 
+    event.Skip(); 
+}
+void StaticMeshEditor::OnActivate( wxActivateEvent& event )
+{   
+    m_pModelViewerWindow->ActiveD3D();    
+}
+
+void StaticMeshEditor::Init(WEMeshContent* pMeshContent)
+{
+    m_pMeshContent = pMeshContent;
+    m_pMesh = m_pMeshContent->CreateMesh();
+
+    m_pMaterialModifierPanel->Init(m_pMeshContent->GetMaterialContents(), m_pMesh->GetMaterials());
+}
+
+void StaticMeshEditor::OnTick( wxTimerEvent& event )
+{    
+    if (m_pRenderCore->BeginFrame())
+    {
+        if (m_pMesh)
+            m_pRenderCore->PushMesh(m_pMesh);
+        m_pRenderCore->EndFrame();
+    }
 }

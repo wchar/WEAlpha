@@ -90,6 +90,7 @@ void WEFullScreenQuad::Prepare()
 
 void WEFullScreenQuad::DrawQuad()
 {
+    Prepare();
     m_pImmediateContext->Draw(6, 0);
 }
 

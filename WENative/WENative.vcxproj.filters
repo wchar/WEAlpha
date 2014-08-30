@@ -82,9 +82,6 @@
     <ClInclude Include="WESkeletonMeshContent.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="WESkeletonMeshRenderer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="WEFbxCommon.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -157,9 +154,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="WESkeletonMeshContent.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="WESkeletonMeshRenderer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="WEFbxCommon.cpp">

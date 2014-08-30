@@ -6,6 +6,11 @@
 #include "WEMesh.h"
 #include "WESkeletonMesh.h"
 
+#include "WECascadeShadowManager.h"
+#include "WEHDAO.h"
+#include "WEFullScreenQuad.h"
+#include "WEHDR.h"
+
 class DLL_EXPORT WERenderCore
 {
 public:
@@ -42,6 +47,9 @@ public:
     //void EnableHDR(bool bEnable);
     //void EnableDOF(bool bEnable);
 
+    WECascadeManager* GetCascadeManager();
+    WEHDR* GetHDR();
+    WEHDAO* GetHDAO();
 protected:
     // Draw
     //void DrawMeshCascade( WEMesh* pMesh );
@@ -71,5 +79,6 @@ protected:
     UINT m_uFrameStage;	
 
     HWND m_CurrenthWnd;
+
 };
 

@@ -22,12 +22,17 @@ WEMaterial::WEMaterial(WEMaterialContent* pContent)
         m_pNormalTexture = pContent->m_pNormalTextureContent->CreateTexture();
     }
 
+    m_bEnableAlpha = pContent->m_bEnableAlpha;
+    m_bEnableSpecular = pContent->m_bEnableSpecular;
+
+    m_fStar = pContent->m_fStar;
+    m_fShininess = pContent->m_fShininess;
+    m_fAlpha = pContent->m_fAlpha;
+
     m_vAmbient = pContent->m_vAmbient;
     m_vDiffuse = pContent->m_vDiffuse;
     m_vEmissive = pContent->m_vEmissive;
     m_vSpecular = pContent->m_vSpecular;
-
-    m_ShadingModel = pContent->m_bEnableSpecular ? ePhong : eLambert;
 }
 
 
@@ -36,4 +41,18 @@ WEMaterial::~WEMaterial()
     SAFE_DELETE(m_pEmissiveTexture);
     SAFE_DELETE(m_pDiffuseTexture);
     SAFE_DELETE(m_pNormalTexture);
+}
+
+
+int WEMaterial::GetMaterialFlag()
+{
+    int flag = 0;
+    if (m_pDiffuseTexture)
+        flag += 1;
+    if (m_pEmissiveTexture)
+        flag += 2;
+    if (m_bEnableSpecular)
+        flag += 4;
+
+    return flag;
 }

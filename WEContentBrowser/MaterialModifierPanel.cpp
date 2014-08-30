@@ -46,12 +46,14 @@ fbMaterialModifierPanel::fbMaterialModifierPanel( wxWindow* parent, wxWindowID i
     m_propertyGrid = new wxPropertyGrid(m_panel57, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxPG_DEFAULT_STYLE|wxPG_SPLITTER_AUTO_CENTER);
     wxPGProperty* m_propertyGridItem26;
     m_propertyGridItem26 = m_propertyGrid->Append( new wxPropertyCategory( wxT("ModelType"), wxT("ModelType") ) ); 
-    m_pgIsPhong = m_propertyGrid->Append( new wxBoolProperty( wxT("PhongModel"), wxT("PhongModel") ) ); 
+    m_pgiIsPhong = m_propertyGrid->Append( new wxBoolProperty( wxT("PhongModel"), wxT("PhongModel") ) ); 
     wxPGProperty* m_propertyGridItem20;
     m_propertyGridItem20 = m_propertyGrid->Append( new wxPropertyCategory( wxT("Color"), wxT("Color") ) ); 
     m_pgiAlpha = m_propertyGrid->Append( new wxFloatProperty( wxT("Alpha"), wxT("Alpha") ) ); 
+    m_pgiShininess = m_propertyGrid->Append( new wxFloatProperty( wxT("Shininess"), wxT("Shininess") ) ); 
+
     m_pgiDiffuse = m_propertyGrid->Append( new wxColourProperty( wxT("Diffuse"), wxT("Diffuse") ) ); 
-    m_giEmissive = m_propertyGrid->Append( new wxColourProperty( wxT("Emissive"), wxT("Emissive") ) ); 
+    m_pgiEmissive = m_propertyGrid->Append( new wxColourProperty( wxT("Emissive"), wxT("Emissive") ) ); 
     m_pgiAmbient = m_propertyGrid->Append( new wxColourProperty( wxT("Ambient"), wxT("Ambient") ) ); 
     m_pgiSpecular = m_propertyGrid->Append( new wxColourProperty( wxT("Specular"), wxT("Specular") ) ); 
     wxPGProperty* m_propertyGridItem27;
@@ -161,6 +163,8 @@ void MaterialSetItem::FocusThis(bool bFocus)
     Refresh(true);
 }
 
+
+
 ///////////////////////////////////////////////////////////////////////////
 
 MaterialModifierPanel::MaterialModifierPanel(wxWindow* parent)
@@ -169,16 +173,16 @@ MaterialModifierPanel::MaterialModifierPanel(wxWindow* parent)
     m_panelMaterialSet->SetScrollRate(5, 5);
 
     m_iMaterialCount = 0;
-    InsertMaterial();
-    InsertMaterial();
-    InsertMaterial();
-    InsertMaterial();
+
+    m_strDiffuseTexture = L"";
+    m_strEmissiveTexture = L"";
+    m_strNormalMap = L"";
 }
 
-void MaterialModifierPanel::InsertMaterial()
+void MaterialModifierPanel::InsertMaterial(wxString name)
 {
     MaterialSetItem* pItem = new MaterialSetItem(m_panelMaterialSet);
-    pItem->Init(this, L"aabbbbbbbbbbb", m_iMaterialCount++);
+    pItem->Init(this, name, m_iMaterialCount++);
     wxSizer* pSizer = m_panelMaterialSet->GetSizer();
     pSizer->Add(pItem, 0, wxEXPAND, 5 );    
 
@@ -189,6 +193,8 @@ void MaterialModifierPanel::InsertMaterial()
 
 void MaterialModifierPanel::FocusMaterial(int idx)
 {
+    m_iCurrentIndex = idx;
+
     wxWindowList list = m_panelMaterialSet->GetChildren();
     for (wxWindowList::iterator it = list.begin(); it != list.end(); it++)
     {
@@ -198,4 +204,74 @@ void MaterialModifierPanel::FocusMaterial(int idx)
             pItem->FocusThis(false);
         }
     }
+
+    FillPropertyGrid(m_pWEContents->at(idx));
+}
+
+void MaterialModifierPanel::Init(vector<WEMaterialContent*>* pWEContents, vector<WEMaterial*>* pWEMaterials)
+{
+    m_pWEContents = pWEContents;
+    m_pWEMaterials = pWEMaterials;
+
+    for (int i = 0; i < pWEContents->size(); i++)
+    {
+        InsertMaterial(pWEContents->at(i)->m_strMaterialName);
+    }
+}
+
+void MaterialModifierPanel::FillPropertyGrid(WEMaterialContent* pMaterialContent)
+{   
+    m_pgiAlpha->SetValue(pMaterialContent->m_fAlpha);
+    m_pgiShininess->SetValue(pMaterialContent->m_fShininess);
+    m_pgiSpecular->SetValue(VectorToColor(pMaterialContent->m_vSpecular));
+    m_pgiAmbient->SetValue(VectorToColor(pMaterialContent->m_vAmbient));
+    m_pgiDiffuse->SetValue(VectorToColor(pMaterialContent->m_vDiffuse));
+    m_pgiEmissive->SetValue(VectorToColor(pMaterialContent->m_vEmissive));
+    m_pgiIsPhong->SetValue(pMaterialContent->m_bEnableSpecular);
+
+    m_pgiDiffuseTex->SetValue(m_strDiffuseTexture);
+    m_pgiEmissiveTex->SetValue(m_strEmissiveTexture);
+    m_pgiNormalMap->SetValue(m_strNormalMap);
+
+    m_pgiDiffuseTex->Enable(false);
+    m_pgiEmissiveTex->Enable(false);
+    m_pgiNormalMap->Enable(false);
+}
+
+wxVariant MaterialModifierPanel::VectorToColor(XMFLOAT3& v)
+{
+    wxColour color;
+    color.Set(v.x * 255, v.y * 255, v.z * 255, 255);
+    wxVariant variant;
+    variant << wxColourPropertyValue(color);
+    return variant;
+}
+
+XMFLOAT3 MaterialModifierPanel::ColorToVector(wxVariant& c)
+{
+    wxColour colour ;
+    colour << c;
+
+    XMFLOAT3 ret;
+    ret.x = colour.Red() / 255.f;
+    ret.y = colour.Green() / 255.f;
+    ret.z = colour.Blue() / 255.f;
+
+    return ret;
+}
+
+
+void MaterialModifierPanel::OnPropertiesChange( wxPropertyGridEvent& event )
+{
+    WEMaterial* pMaterial = m_pWEMaterials->at(m_iCurrentIndex);
+    WEMaterialContent* pContent = m_pWEContents->at(m_iCurrentIndex);
+
+    pContent->m_bEnableSpecular = pMaterial->m_bEnableSpecular = m_pgiIsPhong->GetValue().GetBool();
+    pContent->m_fAlpha = pMaterial->m_fAlpha = m_pgiAlpha->GetValue().GetDouble();
+    pContent->m_fShininess = pMaterial->m_fShininess = m_pgiShininess->GetValue().GetDouble();
+    pContent->m_vDiffuse = pMaterial->m_vDiffuse = ColorToVector(m_pgiDiffuse->GetValue());
+    pContent->m_vAmbient = pMaterial->m_vAmbient = ColorToVector(m_pgiAmbient->GetValue());
+    pContent->m_vEmissive = pMaterial->m_vEmissive = ColorToVector(m_pgiEmissive->GetValue());
+    pContent->m_vSpecular = pMaterial->m_vSpecular = ColorToVector(m_pgiSpecular->GetValue());
+
 }

@@ -33,7 +33,10 @@ struct CascadeShadowBufferType
     FLOAT       m_fTexelSize; // Shadow map texel size.
     FLOAT       m_fNativeTexelSizeInX; // Texel size in native map ( textures are packed ).
     FLOAT       m_fPaddingForCB3;// Padding variables CBs must be a multiple of 16 bytes.
-
+    
     FLOAT       m_fCascadeFrustumsEyeSpaceDepths[8]; // The values along Z that seperate the cascades.   
-    XMFLOAT4    m_vLightDir;    
+    
+    XMFLOAT4    m_vLightDir;  
+    XMFLOAT3    m_vEyePos;
+    FLOAT       m_fPadding;
 };

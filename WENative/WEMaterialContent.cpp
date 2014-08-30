@@ -8,10 +8,14 @@ namespace
         bool bEnableAlpha;
         bool bEnableSpecular;
 
-        XMFLOAT4 vEmissive;
-        XMFLOAT4 vAmbient;
-        XMFLOAT4 vDiffuse;
-        XMFLOAT4 vSpecular;
+        FLOAT fAlpha;
+        FLOAT fShininess;
+        FLOAT fStar;
+
+        XMFLOAT3 vEmissive;
+        XMFLOAT3 vAmbient;
+        XMFLOAT3 vDiffuse;
+        XMFLOAT3 vSpecular;
 
         UINT uOffsetTexDiffuse;
         UINT uOffsetTexEmissive;
@@ -19,7 +23,7 @@ namespace
     };
 }
 
-WEMaterialContent::WEMaterialContent(void)
+WEMaterialContent::WEMaterialContent()
 {
     m_pNormalTextureContent = NULL;
     m_pDiffuseTextureContent = NULL;
@@ -27,46 +31,28 @@ WEMaterialContent::WEMaterialContent(void)
 }
 
 
-WEMaterialContent::~WEMaterialContent(void)
+WEMaterialContent::~WEMaterialContent()
 {
     SAFE_DELETE(m_pNormalTextureContent);
     SAFE_DELETE(m_pDiffuseTextureContent);
     SAFE_DELETE(m_pEmissiveTextureContent);
 }
 
-bool WEMaterialContent::Create(WEObjImporter::Material* pObjMaterial)
-{
-    m_bEnableSpecular = pObjMaterial->bSpecular;
-    m_bEnableAlpha = pObjMaterial->fAlpha >= 1.0f;
-
-    pObjMaterial->nShininess;
-
-    if (pObjMaterial->bTexture)
-    {
-        m_pDiffuseTextureContent = new WETextureContent();
-        m_pDiffuseTextureContent->Import(pObjMaterial->strTexture);
-    }
-    CopyMemory(&m_vAmbient,&pObjMaterial->vAmbient, sizeof(XMFLOAT3));
-    CopyMemory(&m_vSpecular, &pObjMaterial->vSpecular, sizeof(XMFLOAT3));
-    CopyMemory(&m_vDiffuse, &pObjMaterial->vDiffuse, sizeof(XMFLOAT3));
-
-    m_vDiffuse.w = pObjMaterial->fAlpha;
-    m_vAmbient.w = 1.0f;
-    m_vSpecular.w = 1.0f;
- 
-    if (ToContentBuffer())
-        return true;
-
-    SAFE_DELETE(m_pDiffuseTextureContent);
-    return false;
-}
 
 bool WEMaterialContent::Create(const MATERIAL* pMaterial)
 {
     m_bEnableSpecular = pMaterial->bSpecular;
     m_bEnableAlpha = pMaterial->fOpacity >= 1.0f;
 
-    pMaterial->fShinness;
+    m_fShininess = pMaterial->fShininess;
+    m_fAlpha = pMaterial->fOpacity;
+    m_fStar = 0.0f;
+
+    m_vAmbient = pMaterial->vAmbient;
+    m_vSpecular = pMaterial->vSpecular;
+    m_vEmissive = pMaterial->vEmissive;
+    m_vDiffuse = pMaterial->vDiffuse;
+
 
     if (pMaterial->bDiffuseTexture)
     {
@@ -84,13 +70,7 @@ bool WEMaterialContent::Create(const MATERIAL* pMaterial)
         m_pNormalTextureContent->Import(pMaterial->strNormalMap);
     }
 
-    CopyMemory(&m_vAmbient,&pMaterial->vAmbient, sizeof(XMFLOAT3));
-    CopyMemory(&m_vSpecular, &pMaterial->vSpecular, sizeof(XMFLOAT3));
-    CopyMemory(&m_vDiffuse, &pMaterial->vDiffuse, sizeof(XMFLOAT3));
-
-    m_vDiffuse.w = pMaterial->fOpacity;
-    m_vAmbient.w = 1.0f;
-    m_vSpecular.w = 1.0f;
+    wcscpy_s(m_strMaterialName, pMaterial->strMaterialName);
 
     if (ToContentBuffer())
         return true;
@@ -112,6 +92,9 @@ bool WEMaterialContent::ToContentBuffer()
     // Filling head structure.
     head.bEnableAlpha = m_bEnableAlpha;
     head.bEnableSpecular = m_bEnableSpecular;
+    head.fAlpha = m_fAlpha;
+    head.fShininess = m_fShininess;
+    head.fStar = m_fStar;
     head.vDiffuse = m_vDiffuse;
     head.vAmbient = m_vAmbient;
     head.vEmissive = m_vEmissive;

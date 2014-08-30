@@ -92,8 +92,45 @@ void WED3D::GetScreen(UINT* width, UINT* height)
     *height = rc.bottom - rc.top;
 }
 
-HRESULT WED3D::SetWindow(HWND hwnd)
-{
+HRESULT WED3D::SetWindow(HWND hWnd)
+{	
+    HRESULT hr = S_OK;
+
+    m_hwnd = hWnd;
+
+    IDXGIDevice * pDXGIDevice;
+    m_pd3dDevice->QueryInterface(__uuidof(IDXGIDevice), (void **)&pDXGIDevice);
+
+    IDXGIAdapter * pDXGIAdapter;
+    pDXGIDevice->GetParent(__uuidof(IDXGIAdapter), (void **)&pDXGIAdapter);
+
+    IDXGIFactory * pIDXGIFactory;
+    pDXGIAdapter->GetParent(__uuidof(IDXGIFactory), (void **)&pIDXGIFactory);
+
+    RECT rc;
+    GetClientRect( hWnd, &rc );
+    UINT width = rc.right - rc.left;
+    UINT height = rc.bottom - rc.top;
+
+    DXGI_SWAP_CHAIN_DESC sd;
+    ZeroMemory( &sd, sizeof( sd ) );
+    sd.BufferCount = 1;
+    sd.BufferDesc.Width = width;
+    sd.BufferDesc.Height = height;
+    sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    sd.BufferDesc.RefreshRate.Numerator = 60;
+    sd.BufferDesc.RefreshRate.Denominator = 1;
+    sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+    sd.OutputWindow = hWnd;
+    sd.SampleDesc.Count = 1;
+    sd.SampleDesc.Quality = 0;
+    sd.Windowed = TRUE;
+
+    SAFE_RELEASE(m_pSwapChain);
+    pIDXGIFactory->CreateSwapChain( m_pd3dDevice, &sd, &m_pSwapChain );
+
+    V_RETURN(OnResizeWindow());
+
     return S_OK;
 }
 
@@ -112,9 +149,9 @@ HRESULT WED3D::OnResizeWindow()
     UINT width = rc.right - rc.left;
     UINT height = rc.bottom - rc.top;
 
-    //ID3D11Texture2D* pBackBuffer = NULL;
-    //V_RETURN(m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer));
-    //pBackBuffer->Release();
+    ID3D11Texture2D* pBackBuffer = NULL;
+    V_RETURN(m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer));
+    pBackBuffer->Release();
 
     V_RETURN(m_pSwapChain->ResizeBuffers(2, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, 0));
     V_RETURN(CreateViews(width, height));
@@ -128,6 +165,7 @@ HRESULT WED3D::OnResizeWindow()
     {
         pCamera->SetProjParams(width, height, pCamera->GetNearClip(), pCamera->GetFarClip());
     }
+
     return S_OK;
 }
 

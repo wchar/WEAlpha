@@ -23,7 +23,7 @@ WEObjImporter::~WEObjImporter()
 {
     for (UINT iMaterial = 0; iMaterial < m_Materials.size(); ++iMaterial)
     {
-        Material *pMaterial = m_Materials.at(iMaterial);
+        MATERIAL *pMaterial = m_Materials.at(iMaterial);
         SAFE_DELETE(pMaterial);
     }
     m_Materials.clear();
@@ -55,12 +55,12 @@ HRESULT WEObjImporter::LoadGeometryFromOBJ(const WCHAR* strFileName)
     vector <XMFLOAT3> Normals;
 
     // The first subset uses the default material
-    Material* pMaterial = new Material();
+    MATERIAL* pMaterial = new MATERIAL();
     if (pMaterial == NULL)
         return E_OUTOFMEMORY;
 
     InitMaterial(pMaterial);
-    wcscpy_s(pMaterial->strName, MAX_PATH - 1, L"default");
+    wcscpy_s(pMaterial->strMaterialName, MAX_PATH - 1, L"default");
     m_Materials.push_back(pMaterial);
 
     DWORD dwCurSubset = 0;
@@ -163,8 +163,8 @@ HRESULT WEObjImporter::LoadGeometryFromOBJ(const WCHAR* strFileName)
             bool bFound = false;
             for (UINT iMaterial = 0; iMaterial < m_Materials.size(); iMaterial++)
             {
-                Material* pCurMaterial = m_Materials.at(iMaterial);
-                if (0 == wcscmp(pCurMaterial->strName, strName))
+                MATERIAL* pCurMaterial = m_Materials.at(iMaterial);
+                if (0 == wcscmp(pCurMaterial->strMaterialName, strName))
                 {
                     bFound = true;
                     dwCurSubset = iMaterial;
@@ -174,14 +174,14 @@ HRESULT WEObjImporter::LoadGeometryFromOBJ(const WCHAR* strFileName)
 
             if (!bFound)
             {
-                pMaterial = new Material();
+                pMaterial = new MATERIAL();
                 if (pMaterial == NULL)
                     return E_OUTOFMEMORY;
 
                 dwCurSubset = m_Materials.size();
 
                 InitMaterial(pMaterial);
-                wcscpy_s(pMaterial->strName, MAX_PATH - 1, strName);
+                wcscpy_s(pMaterial->strMaterialName, MAX_PATH - 1, strName);
 
                 m_Materials.push_back(pMaterial);
             }
@@ -324,7 +324,7 @@ HRESULT WEObjImporter::LoadMaterialsFromMTL(const WCHAR* strFileName)
     if (!InFile)
         return DXTRACE_ERR(L"wifstream::open", E_FAIL);
 
-    Material* pMaterial = NULL;
+    MATERIAL* pMaterial = NULL;
 
     for (; ;)
     {
@@ -341,8 +341,8 @@ HRESULT WEObjImporter::LoadMaterialsFromMTL(const WCHAR* strFileName)
             pMaterial = NULL;
             for (UINT i = 0; i < m_Materials.size(); i++)
             {
-                Material* pCurMaterial = m_Materials.at(i);
-                if (0 == wcscmp(pCurMaterial->strName, strName))
+                MATERIAL* pCurMaterial = m_Materials.at(i);
+                if (0 == wcscmp(pCurMaterial->strMaterialName, strName))
                 {
                     pMaterial = pCurMaterial;
                     break;
@@ -383,14 +383,14 @@ HRESULT WEObjImporter::LoadMaterialsFromMTL(const WCHAR* strFileName)
             0 == wcscmp(strCommand, L"Tr"))
         {
             // Alpha
-            InFile >> pMaterial->fAlpha;
+            InFile >> pMaterial->fOpacity;
         }
         else if (0 == wcscmp(strCommand, L"Ns"))
         {
             // Shininess
             int nShininess;
             InFile >> nShininess;
-            pMaterial->nShininess = nShininess;
+            pMaterial->fShininess = nShininess;
         }
         else if (0 == wcscmp(strCommand, L"illum"))
         {
@@ -403,10 +403,10 @@ HRESULT WEObjImporter::LoadMaterialsFromMTL(const WCHAR* strFileName)
         {
             // Texture
             InFile >> str;
-            wcscpy_s(pMaterial->strTexture, m_strMediaDir);
-            wcscat_s(pMaterial->strTexture, L"\\");
-            wcscat_s(pMaterial->strTexture, str);
-            pMaterial->bTexture = true;
+            wcscpy_s(pMaterial->strDiffuseTexture, m_strMediaDir);
+            wcscat_s(pMaterial->strDiffuseTexture, L"\\");
+            wcscat_s(pMaterial->strDiffuseTexture, str);
+            pMaterial->bDiffuseTexture = true;
         }
         else
         {
@@ -421,16 +421,14 @@ HRESULT WEObjImporter::LoadMaterialsFromMTL(const WCHAR* strFileName)
 
 }
 
-void WEObjImporter::InitMaterial(Material* pMaterial)
+void WEObjImporter::InitMaterial(MATERIAL* pMaterial)
 {
-    ZeroMemory(pMaterial, sizeof(Material));
+    ZeroMemory(pMaterial, sizeof(MATERIAL));
 
     pMaterial->vAmbient = XMFLOAT3(0.2f, 0.2f, 0.2f);
     pMaterial->vDiffuse = XMFLOAT3(0.8f, 0.8f, 0.8f);
     pMaterial->vSpecular = XMFLOAT3(1.0f, 1.0f, 1.0f);
-    pMaterial->nShininess = 0;
-    pMaterial->fAlpha = 1.0f;
-    pMaterial->bSpecular = false;
-    pMaterial->bTexture = false;
+    pMaterial->fShininess = 0.0f;
+    pMaterial->fOpacity = 1.0f;
 }
 

@@ -61,7 +61,6 @@ WECascadeManager::WECascadeManager()
     m_pDepthStencilView = 0;
 
     m_pMeshRenderer = new WEMeshRenderer();
-    m_pSkeletonMeshRenderer = new WESkeletonMeshRenderer();
 
     //
     m_CascadeConfig.m_nCascadeLevels = 4;
@@ -98,9 +97,7 @@ WECascadeManager::~WECascadeManager()
 {
     Release();
 
-
     SAFE_DELETE(m_pMeshRenderer);
-    SAFE_DELETE(m_pSkeletonMeshRenderer);
 }
 
 HRESULT WECascadeManager::Create(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext)
@@ -198,7 +195,6 @@ HRESULT WECascadeManager::Create(ID3D11Device* pd3dDevice, ID3D11DeviceContext* 
 
     // Mesh renderer.
     V_RETURN(m_pMeshRenderer->Create(pd3dDevice, pd3dImmediateContext));
-    V_RETURN(m_pSkeletonMeshRenderer->Create(pd3dDevice, pd3dImmediateContext));
 
     // Create shaders.
     V_RETURN(CreateShaders());
@@ -1189,7 +1185,8 @@ HRESULT WECascadeManager::UpdataCascadeConstantBuffer()
     XMVECTOR ep = XMLoadFloat3(&WE::Light()->GetEyePosition());
     XMVECTOR lp = XMLoadFloat3(&WE::Light()->GetLookatPosition());
     XMVECTOR dir = XMVector3Normalize(ep - lp);
-    XMStoreFloat4(&pcb->m_vLightDir, XMVectorSetW(dir, 1.0f));
+    XMStoreFloat4(&pcb->m_vLightDir, dir);
+    pcb->m_vEyePos = WE::Camera()->GetEyePosition();
     pcb->m_nCascadeLevels = m_CascadeConfig.m_nCascadeLevels;
     pcb->m_iVisualizeCascades = false;
 
@@ -1226,7 +1223,7 @@ void WECascadeManager::Render(vector<WEMesh*>* pMeshs, vector<WESkeletonMesh*>* 
         for (vector<WESkeletonMesh*>::iterator it = pSkeletonMeshs->begin();
             it != pSkeletonMeshs->end(); it++)
         {
-            m_pSkeletonMeshRenderer->DrawCascade(*it, mWorld, mView, mProjection);
+            m_pMeshRenderer->DrawCascade(*it, mWorld, mView, mProjection);
         }
     }
 
@@ -1303,7 +1300,7 @@ void WECascadeManager::Render(vector<WEMesh*>* pMeshs, vector<WESkeletonMesh*>* 
     for (vector<WESkeletonMesh*>::iterator it = pSkeletonMeshs->begin();
         it != pSkeletonMeshs->end(); it++)
     {
-        m_pSkeletonMeshRenderer->DrawScene(*it, mWorld, mView, 
+        m_pMeshRenderer->DrawScene(*it, mWorld, mView, 
             mProjection, mShadow, m_CascadeConfig.m_nCascadeLevels);
     }
 

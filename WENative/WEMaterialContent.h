@@ -23,19 +23,25 @@ public:
     // writer data on m_pStaticMemory
     virtual bool FromContentBuffer();
 
-    bool Create(WEObjImporter::Material* pObjMaterial);
     bool Create(const MATERIAL* pMaterial);
 
     WEMaterial* CreateMaterial();
+
+
+    bool        m_bEnableAlpha;
+    bool        m_bEnableSpecular;
+
+    FLOAT       m_fAlpha;
+    FLOAT       m_fShininess;
+    FLOAT       m_fStar;
+
+    XMFLOAT3    m_vEmissive;
+    XMFLOAT3    m_vAmbient;
+    XMFLOAT3    m_vDiffuse;
+    XMFLOAT3    m_vSpecular;
+
+    WCHAR       m_strMaterialName[MAX_PATH];
 protected:
-    bool    m_bEnableAlpha;
-    bool    m_bEnableSpecular;
-
-    XMFLOAT4    m_vEmissive;
-    XMFLOAT4    m_vAmbient;
-    XMFLOAT4    m_vDiffuse;
-    XMFLOAT4    m_vSpecular;
-
     WETextureContent* m_pEmissiveTextureContent;
     WETextureContent* m_pDiffuseTextureContent;
     WETextureContent* m_pNormalTextureContent;

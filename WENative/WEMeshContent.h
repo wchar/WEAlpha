@@ -35,7 +35,10 @@ public:
     // Create new mesh instance.
     WEMesh* CreateMesh();
 
-
+    vector<WEMaterialContent*>* GetMaterialContents()
+    {
+        return &m_MaterialContents;
+    }
 protected:
     bool LoadMaterials();
     void ReleaseMaterialContents();

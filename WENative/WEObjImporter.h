@@ -5,6 +5,7 @@
 #endif
 
 #include "WED3D.h"
+#include "WEMeshMisc.h"
 #include <vector>
 
 using namespace std;
@@ -30,23 +31,6 @@ public:
         CacheEntry* pNext;
     };
 
-    struct Material
-    {
-        WCHAR strName[MAX_PATH];
-
-        XMFLOAT3 vAmbient;
-        XMFLOAT3 vDiffuse;
-        XMFLOAT3 vSpecular;
-
-        int nShininess;
-        float fAlpha;
-
-        bool bSpecular;
-
-        bool bTexture;
-        WCHAR strTexture[MAX_PATH];
-    };
-
 public:
     vector <VERTEX>* GetVertices()
     { 
@@ -56,7 +40,7 @@ public:
     { 
         return &m_Indices; 
     }
-    vector <Material*>* GetMaterial()
+    vector <MATERIAL*>* GetMaterial()
     { 
         return &m_Materials; 
     }
@@ -69,7 +53,7 @@ private:
     HRESULT  LoadGeometryFromOBJ(const WCHAR* strFileName);
     HRESULT  LoadMaterialsFromMTL(const WCHAR* strFileName);
     DWORD    AddVertex(UINT hash, VERTEX* pVertex);
-    void  InitMaterial(Material* pMaterial);
+    void  InitMaterial(MATERIAL* pMaterial);
     void  DeleteCache();
 
     vector <CacheEntry*> m_VertexCache;
@@ -80,7 +64,7 @@ private:
 
     vector <DWORD> m_Attributes;
 
-    vector <Material*> m_Materials;
+    vector <MATERIAL*> m_Materials;
 
     WCHAR m_strMediaDir[MAX_PATH];
 };

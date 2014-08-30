@@ -14,12 +14,6 @@ namespace
         return &g_WECascadeManager;
     }
 
-    WEDeferredLighting* GetDeferredLighting()
-    {
-        static WEDeferredLighting g_DefferredLighting;
-        return &g_DefferredLighting;
-    }
-
     WEHDAO* GetHDAO()
     {
         static WEHDAO g_HDAO;
@@ -89,9 +83,6 @@ HRESULT WERenderCore::Create(HWND hwnd)
     // Create mesh cascade shadow manager.
     V_RETURN(GetCascadeManager()->Create(pd3dDevice, pImmediateContext));
 
-    // Create deferred lighting
-    V_RETURN(GetDeferredLighting()->Create(pd3dDevice, pImmediateContext));
-
     // Create HDAO
     V_RETURN(GetHDAO()->Create(pd3dDevice, pImmediateContext));
 
@@ -139,10 +130,14 @@ HRESULT WERenderCore::OnResizeWindow()
     if (m_uFrameStage == eFrameEnd)
     {
         GetCascadeManager()->ReleaseRenderTargetBuffers();
+        GetHDR()->ReleaseViews();
+        GetHDAO()->ReleaseViews();
 
         WE::D3D().OnResizeWindow();
 
         V_RETURN(GetCascadeManager()->CreateRenderTargetBuffers());
+        V_RETURN(GetHDR()->CreateViews());
+        V_RETURN(GetHDAO()->CreateViews());
     }
     return S_OK;
 }
@@ -175,26 +170,13 @@ void WERenderCore::EndFrame()
     ID3D11ShaderResourceView* pNormalRV = GetCascadeManager()->GetNormalRV();
     ID3D11ShaderResourceView* pDepthRV = GetCascadeManager()->GetDepthRV();
     
-    // Deferred lighting.
-    if (GetAsyncKeyState( 'A' ))
-    {    
-        GetDeferredLighting()->Process(GetFullScreenQuad(), pColorRV, pNormalRV, XMFLOAT3(0,0,1));
-        pColorRV = GetDeferredLighting()->GetLightRV();
-    }
-    else if (GetAsyncKeyState( 'B' ))
-    {
-        GetHDR()->Process(GetFullScreenQuad(), pColorRV);    
-        pColorRV = GetHDR()->GetLumRV();
-    }
-    else if (GetAsyncKeyState( 'C' ))
-    {
-        GetHDAO()->Process(GetFullScreenQuad(), pNormalRV, pDepthRV);    
-        pColorRV = GetHDAO()->GetOcclusionRV();
-    }
-         
+    GetHDAO()->Process(GetFullScreenQuad(), pNormalRV, pDepthRV, pColorRV);  
+    pColorRV = GetHDAO()->GetOcclusionRV();
+    GetHDR()->Process(GetFullScreenQuad(), pColorRV);    
+    pColorRV = GetHDR()->GetFinalRV(); 
+
     ID3D11RenderTargetView* pRTV = WE::D3D().GetRenderTargetView();
     GetFinalPass()->TestShaderResourceView(GetFullScreenQuad(), pRTV, pColorRV);
-
 
     // Clearing and Ending    
     WE::D3D().Present();
@@ -210,4 +192,19 @@ void WERenderCore::DrawMesh(WEMesh* pMesh)
 void WERenderCore::DrawSkeletonMesh(WESkeletonMesh* pSkeletonMesh)
 {
     m_DrawList_SkeletonMesh.push_back(pSkeletonMesh);
+}
+
+WECascadeManager* WERenderCore::GetCascadeManager()
+{
+    return ::GetCascadeManager();
+}
+
+WEHDR* WERenderCore::GetHDR()
+{
+    return ::GetHDR();
+}
+
+WEHDAO* WERenderCore::GetHDAO()
+{
+    return ::GetHDAO();
 }

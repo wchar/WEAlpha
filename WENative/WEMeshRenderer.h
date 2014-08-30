@@ -2,7 +2,7 @@
 
 #include "WED3D.h"
 #include "WEMesh.h"
-
+#include "WESkeletonMesh.h"
 #include "WECascadeShadowMisc.h"
 
 class DLL_EXPORT WEMeshRenderer
@@ -25,6 +25,17 @@ public:
         CXMMATRIX mShadowView, 
         UINT uCascadeLevel);
 
+    void DrawCascade(WESkeletonMesh* pMesh, 
+        CXMMATRIX mWorld, 
+        CXMMATRIX mView, 
+        CXMMATRIX mProjection);
+
+    void DrawScene(WESkeletonMesh* pMesh,
+        CXMMATRIX mWorld, 
+        CXMMATRIX mView, 
+        CXMMATRIX mProjection, 
+        CXMMATRIX mShadowView, 
+        UINT uCascadeLevel);
 
 protected:
     ID3D11Device*           m_pd3dDevice;
@@ -36,6 +47,7 @@ protected:
     ID3D11Buffer*           m_pPSBuffer;
 
     ID3D11InputLayout*      m_pVertexLayoutMesh;
+    ID3D11InputLayout*      m_pVertexLayoutSkeletonMesh;
 
     ID3D11VertexShader*     m_pvsRenderVarianceShadow;
     ID3DBlob*               m_pvsRenderVarianceShadowBlob;
@@ -44,7 +56,15 @@ protected:
 
     ID3D11VertexShader*     m_pvsRenderScene;
     ID3DBlob*               m_pvsRenderSceneBlob;
-    ID3D11PixelShader*      m_ppsRenderSceneAllShaders[MAX_CASCADES];
-    ID3DBlob*               m_ppsRenderSceneAllShadersBlob[MAX_CASCADES];
+
+    ID3D11VertexShader*     m_pvsRenderSkeletonVarianceShadow;
+    ID3DBlob*               m_pvsRenderSkeletonVarianceShadowBlob;
+    ID3D11VertexShader*     m_pvsRenderSkeletonScene;
+    ID3DBlob*               m_pvsRenderSkeletonSceneBlob;
+    
+    //BLEND_BETWEEN_CASCADE_LAYERS_FLAG
+    //SELECT_CASCADE_BY_INTERVAL_FLAG
+    ID3D11PixelShader*      m_ppsRenderSceneAllShaders[MAX_CASCADES][2][2];
+    ID3DBlob*               m_ppsRenderSceneAllShadersBlob[MAX_CASCADES][2][2];
 };
 

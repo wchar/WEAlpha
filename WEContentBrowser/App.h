@@ -6,4 +6,5 @@ class CEApp : public wxApp
 {
 public:
 	virtual bool OnInit();
+
 };

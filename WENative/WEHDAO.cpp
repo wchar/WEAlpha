@@ -156,7 +156,8 @@ void WEHDAO::ReleaseViews()
 }
 
 void WEHDAO::Process(WEFullScreenQuad* pFullScreenQuad, 
-    ID3D11ShaderResourceView* pNormalSRV, ID3D11ShaderResourceView* pDepthSRV)
+    ID3D11ShaderResourceView* pNormalSRV, ID3D11ShaderResourceView* pDepthSRV,
+    ID3D11ShaderResourceView* pColourSRV)
 {
     HRESULT hr;
 
@@ -198,6 +199,7 @@ void WEHDAO::Process(WEFullScreenQuad* pFullScreenQuad,
     // Set PS resource views.
     m_pImmediateContext->PSSetShaderResources(0, 1, &pDepthSRV);
     m_pImmediateContext->PSSetShaderResources(1, 1, &pNormalSRV);
+    m_pImmediateContext->PSSetShaderResources(2, 1, &pColourSRV);
 
     // Draw.
     pFullScreenQuad->DrawQuad();

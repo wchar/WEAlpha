@@ -39,6 +39,15 @@ VS_OUTPUT VSMain( VS_INPUT input )
     return output;
 }
 
+VS_OUTPUT VSMain_SKIN( VS_INPUT input )
+{
+    VS_OUTPUT output;
+    
+    output.position = mul(input.position, g_mWorldViewProjection);
+
+    return output;
+}
+
 
 //--------------------------------------------------------------------------------------
 // Pixel Shader

@@ -34,7 +34,8 @@ struct VS_OUTPUT
 	    
 	float4 texShadow	: TEXCOORD1;
     float4 interpPos	: TEXCOORD2; 
-    float  depth		: TEXCOORD3;
+    float  depth		: TEXCOORD3;    
+	float3 worldPos     : TEXCOORD4;
 };
 
 

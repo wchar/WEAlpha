@@ -46,8 +46,7 @@ protected:
     virtual void OnAbout( wxCommandEvent& event ) { event.Skip(); }
     virtual void OnExit( wxCommandEvent& event ) { event.Skip(); }
     virtual void OnToolBar( wxCommandEvent& event ) { event.Skip(); }
-
-
+    virtual void OnActivate(wxActivateEvent& event) { event.Skip(); }
 public:
 
     fbStaticMeshEditor( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("StaticMeshEditor"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 863,608 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
@@ -62,12 +61,35 @@ public:
 
 };
 
+
+#include "WENative.h"
+#include "D3DPanel.h"
+#include "MaterialModifierPanel.h"
 ///////////////////////////////////////////////////////////////////////////////
 /// Class StaticMeshEditor
 ///////////////////////////////////////////////////////////////////////////////
 class StaticMeshEditor : public fbStaticMeshEditor
 {
 public:
-    StaticMeshEditor(wxWindow* parent);
+    StaticMeshEditor(wxWindow* parent, WERenderCore* pRenderCore);
+    ~StaticMeshEditor();
+    // Virtual event handlers, overide them in your derived class
+    virtual void OnOpen( wxCommandEvent& event );
+    virtual void OnSave( wxCommandEvent& event );
+    virtual void OnImport( wxCommandEvent& event );
+    virtual void OnAbout( wxCommandEvent& event );
+    virtual void OnExit( wxCommandEvent& event );
+    virtual void OnToolBar( wxCommandEvent& event );
+    virtual void OnActivate( wxActivateEvent& event );
 
+    void Init(WEMeshContent* pMeshContent);
+protected:
+    MaterialModifierPanel* m_pMaterialModifierPanel;
+    WERenderCore* m_pRenderCore;
+    ModelViewerWindow* m_pModelViewerWindow;
+    WEMeshContent* m_pMeshContent;
+    WEMesh* m_pMesh;
+
+    wxTimer m_Timer;
+    virtual void OnTick( wxTimerEvent& event );
 };

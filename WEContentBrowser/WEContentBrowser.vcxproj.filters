@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="shader">
+      <UniqueIdentifier>{cbabcd8b-9f9a-4947-993c-8fc6e3720392}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp">
@@ -39,6 +42,15 @@
     <ClCompile Include="StaticMeshEditor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CascadePane.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcessPane.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldPane.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -56,9 +68,6 @@
     <ClInclude Include="MainFrame.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="resource2.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="SkeletonMeshEditor.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -68,5 +77,46 @@
     <ClInclude Include="StaticMeshEditor.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CascadePane.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcessPane.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldPane.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\DeferredLighting.hlsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shaders\FullScreenQuadVS.hlsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shaders\HDAO.hlsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shaders\HDR.hlsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shaders\MeshCascade.hlsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shaders\MeshPS.hlsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shaders\MeshVS.hlsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shaders\SkeletonMeshVS.hlsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shaders\TestSRV.hlsl">
+      <Filter>shader</Filter>
+    </None>
+    <None Include="shaders\Variance.hlsl">
+      <Filter>shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

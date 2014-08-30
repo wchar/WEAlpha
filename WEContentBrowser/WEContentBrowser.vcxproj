@@ -65,24 +65,41 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="CascadePane.cpp" />
     <ClCompile Include="D3DPanel.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="MaterialEditor.cpp" />
     <ClCompile Include="MaterialModifierPanel.cpp" />
+    <ClCompile Include="PostProcessPane.cpp" />
     <ClCompile Include="SkeletonMeshEditor.cpp" />
     <ClCompile Include="StaticMeshEditor.cpp" />
+    <ClCompile Include="WorldPane.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="CascadePane.h" />
     <ClInclude Include="D3DPanel.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="MainFrame.h" />
     <ClInclude Include="MaterialEditor.h" />
     <ClInclude Include="MaterialModifierPanel.h" />
-    <ClInclude Include="resource2.h" />
+    <ClInclude Include="PostProcessPane.h" />
     <ClInclude Include="SkeletonMeshEditor.h" />
     <ClInclude Include="StaticMeshEditor.h" />
+    <ClInclude Include="WorldPane.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\DeferredLighting.hlsl" />
+    <None Include="shaders\FullScreenQuadVS.hlsl" />
+    <None Include="shaders\HDAO.hlsl" />
+    <None Include="shaders\HDR.hlsl" />
+    <None Include="shaders\MeshCascade.hlsl" />
+    <None Include="shaders\MeshPS.hlsl" />
+    <None Include="shaders\MeshVS.hlsl" />
+    <None Include="shaders\SkeletonMeshVS.hlsl" />
+    <None Include="shaders\TestSRV.hlsl" />
+    <None Include="shaders\Variance.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -473,7 +473,7 @@ void WEFbxLoader::FillMaterialStructure(MATERIAL* pMaterial, FbxSurfaceMaterial 
         // Display the Shininess
         lKFbxDouble1 =((FbxSurfacePhong *) lFbxMaterial)->Shininess;
 
-        pMaterial->fShinness = (float)lKFbxDouble1.Get();
+        pMaterial->fShininess = (float)lKFbxDouble1.Get();
 
         // Display the Reflectivity
         lKFbxDouble1 =((FbxSurfacePhong *) lFbxMaterial)->ReflectionFactor;

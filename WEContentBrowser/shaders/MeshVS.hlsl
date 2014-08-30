@@ -30,7 +30,8 @@ struct VS_OUTPUT
 	    
 	float4 texShadow	: TEXCOORD1;
     float4 interpPos	: TEXCOORD2; 
-    float  depth		: TEXCOORD3;
+    float  depth		: TEXCOORD3;    
+	float3 worldPos     : TEXCOORD4;
 };
 
 
@@ -51,6 +52,6 @@ VS_OUTPUT VSMain(VS_INPUT input)
     output.texShadow = mul( input.position, g_mShadow );
     output.interpPos = input.position;   
     output.depth = mul( input.position, g_mWorldView ).z ;
-    
+    output.worldPos = mul( input.position, g_mWorld ).xyz;
 	return output;
 }

@@ -25,16 +25,15 @@ void D3DPanel::ActiveD3D()
     WE::SetCamera(m_pCamera);
 }
 
-
 void D3DPanel::OnSize(wxSizeEvent& evt)
 {
+    SetSize(evt.GetSize());
     m_pWERenderCore->OnResizeWindow();
 }
 
-
 void D3DPanel::OnPaint(wxPaintEvent& evt)
 {
-
+    evt.Skip();
 }
 
 

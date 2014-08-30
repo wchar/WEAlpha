@@ -2,7 +2,6 @@
 
 #include "WED3D.h"
 #include "WEMeshRenderer.h"
-#include "WESkeletonMeshRenderer.h"
 #include "WECascadeShadowMisc.h"
 
 static const int TARGET_COUNT = 4;
@@ -77,7 +76,6 @@ public:
 
 protected:
     WEMeshRenderer*                 m_pMeshRenderer;
-    WESkeletonMeshRenderer*         m_pSkeletonMeshRenderer;
         
     // D3D variables
     ID3D11Device*                   m_pd3dDevice;

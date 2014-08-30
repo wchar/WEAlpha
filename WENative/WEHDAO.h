@@ -26,7 +26,8 @@ public:
 
     void Process(WEFullScreenQuad* pFullScreenQuad, 
         ID3D11ShaderResourceView* pNormalSRV, 
-        ID3D11ShaderResourceView* pDepthSRV); 
+        ID3D11ShaderResourceView* pDepthSRV,
+        ID3D11ShaderResourceView* pColourSRV); 
 
 
     ID3D11ShaderResourceView*   GetOcclusionRV()

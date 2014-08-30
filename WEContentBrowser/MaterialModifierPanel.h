@@ -30,10 +30,11 @@ protected:
     wxSplitterWindow* m_splitter_h;
     wxScrolledWindow* m_panelMaterialSet;
     wxPropertyGrid* m_propertyGrid;
-    wxPGProperty* m_pgIsPhong;
+    wxPGProperty* m_pgiIsPhong;
     wxPGProperty* m_pgiAlpha;
+    wxPGProperty* m_pgiShininess;
     wxPGProperty* m_pgiDiffuse;
-    wxPGProperty* m_giEmissive;
+    wxPGProperty* m_pgiEmissive;
     wxPGProperty* m_pgiAmbient;
     wxPGProperty* m_pgiSpecular;
     wxPGProperty* m_pgiDiffuseTex;
@@ -57,6 +58,9 @@ public:
 };
 
 
+
+
+#include "WENative.h"
 ///////////////////////////////////////////////////////////////////////////////
 /// Class MaterialModifierPanel
 ///////////////////////////////////////////////////////////////////////////////
@@ -65,10 +69,26 @@ class MaterialModifierPanel : public fbMaterialModifierPanel
 public:
     MaterialModifierPanel(wxWindow* parent);
 
-    void InsertMaterial();
+
+    void Init(vector<WEMaterialContent*>* pWEContents, vector<WEMaterial*>* pWEMaterials);
+
 
     void FocusMaterial(int idx);
-
+    virtual void OnPropertiesChange( wxPropertyGridEvent& event );
 protected:
     int m_iMaterialCount;
+    int m_iCurrentIndex;
+    vector<WEMaterialContent*>* m_pWEContents;
+    vector<WEMaterial*>* m_pWEMaterials;    
+    
+    void InsertMaterial(wxString name);
+    void FillPropertyGrid(WEMaterialContent* WEMaterialContent);
+
+    wxVariant VectorToColor(XMFLOAT3& v);
+    XMFLOAT3 ColorToVector(wxVariant& c);
+
+    wxString m_strDiffuseTexture;
+    wxString m_strEmissiveTexture;
+    wxString m_strNormalMap;
+
 };

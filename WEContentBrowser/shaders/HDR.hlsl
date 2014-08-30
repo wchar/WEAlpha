@@ -1,7 +1,7 @@
 
 
 static const float4 LUM_VECTOR = float4(.299, .587, .114, 0);
-static const float  MIDDLE_GRAY = 0.72f;
+static const float  MIDDLE_GRAY = 0.12f;
 static const float  LUM_WHITE = 1.5f;
 static const float  BRIGHT_THRESHOLD = 0.5f;
 
@@ -87,7 +87,6 @@ float4 FinalPass( PS_INPUT Input ) : SV_TARGET
 }
 
 
-
 float4 DownScale3x3_BrightPass( PS_INPUT Input ) : SV_TARGET
 {   
     float3 vColor = 0.0f;
@@ -106,13 +105,11 @@ float4 DownScale3x3_BrightPass( PS_INPUT Input ) : SV_TARGET
 }
 
 
-
 cbuffer cb0
 {
     float2 g_avSampleOffsets[15];
     float4 g_avSampleWeights[15];
 }
-
 
 
 float4 Bloom( PS_INPUT Input ) : SV_TARGET

@@ -20,7 +20,6 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-
 ///////////////////////////////////////////////////////////////////////////////
 /// Class fbMainFrame
 ///////////////////////////////////////////////////////////////////////////////
@@ -34,6 +33,9 @@ protected:
 
     // Virtual event handlers, overide them in your derived class
     virtual void OnExitAll( wxCommandEvent& event ) { event.Skip(); }
+    virtual void OnCascadeShadowPane( wxCommandEvent& event ) { event.Skip(); }
+    virtual void OnPostProcessPane( wxCommandEvent& event ) { event.Skip(); }
+    virtual void OnWorldPane( wxCommandEvent& event ) { event.Skip(); }
     virtual void OnMeshContent( wxCommandEvent& event ) { event.Skip(); }
     virtual void OnSkeletonMeshContent( wxCommandEvent& event ) { event.Skip(); }
     virtual void OnParticleContent( wxCommandEvent& event ) { event.Skip(); }
@@ -51,7 +53,7 @@ public:
 
 
 
-
+#include "WENative.h"
 ///////////////////////////////////////////////////////////////////////////////
 /// Class MainFrame
 ///////////////////////////////////////////////////////////////////////////////
@@ -59,12 +61,19 @@ class MainFrame : public fbMainFrame
 {
 public:
     MainFrame(wxWindow* parent);
+    ~MainFrame();
 
+    void InitSystem();
 protected:
     virtual void OnExitAll( wxCommandEvent& event );
+    virtual void OnCascadeShadowPane( wxCommandEvent& event );
+    virtual void OnPostProcessPane( wxCommandEvent& event );
+    virtual void OnWorldPane( wxCommandEvent& event );
     virtual void OnMeshContent( wxCommandEvent& event );
     virtual void OnSkeletonMeshContent( wxCommandEvent& event );
     virtual void OnParticleContent( wxCommandEvent& event );
     virtual void OnBeamContent( wxCommandEvent& event );
     virtual void OnAnimTrailContent( wxCommandEvent& event );
+    virtual void OnActivate( wxActivateEvent& event );
+    WERenderCore* m_pRenderCore;
 };

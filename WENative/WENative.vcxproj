@@ -89,7 +89,6 @@
     <ClInclude Include="WERenderTarget.h" />
     <ClInclude Include="WESkeletonMesh.h" />
     <ClInclude Include="WESkeletonMeshContent.h" />
-    <ClInclude Include="WESkeletonMeshRenderer.h" />
     <ClInclude Include="WETexture.h" />
     <ClInclude Include="WETextureContent.h" />
   </ItemGroup>
@@ -116,7 +115,6 @@
     <ClCompile Include="WERenderTarget.cpp" />
     <ClCompile Include="WESkeletonMesh.cpp" />
     <ClCompile Include="WESkeletonMeshContent.cpp" />
-    <ClCompile Include="WESkeletonMeshRenderer.cpp" />
     <ClCompile Include="WETexture.cpp" />
     <ClCompile Include="WETextureContent.cpp" />
   </ItemGroup>

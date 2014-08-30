@@ -15,6 +15,7 @@ cbuffer LightBuffer
 
 Texture2D g_txDepth	 : register(t0);
 Texture2D g_txNormal : register(t1);
+Texture2D g_txColour : register(t2);
 
 SamplerState g_SamplePoint : register(s0);
 
@@ -263,7 +264,8 @@ float4 PSMain(PS_INPUT input) : SV_TARGET
     fOcclusion *= ( g_fHDAOIntensity );
     fOcclusion = 1.0f - saturate( fOcclusion );
     
-	return float4(fOcclusion,fOcclusion,fOcclusion,1);
+	return fOcclusion * g_txColour.Sample(g_SamplePoint, input.texcoord);
+	//return float4(fOcclusion,fOcclusion,fOcclusion,1);
 }
 
 

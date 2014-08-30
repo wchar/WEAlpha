@@ -31,7 +31,7 @@ struct MATERIAL
     XMFLOAT3 vSpecular;
 
     float fOpacity;
-    float fShinness;
+    float fShininess;
     float fReflectivity;
 
     bool bSpecular;// false Lambert and true Phong.
